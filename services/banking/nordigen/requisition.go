@@ -10,7 +10,10 @@ import (
 	"time"
 )
 
-func (c *Client) CreateRequisition(institutionId uuid.UUID, agreementId uuid.UUID) (*banking.Requisition, error) {
+func (c *Client) CreateRequisition(
+	institutionId uuid.UUID,
+	agreementId uuid.UUID,
+) (*banking.Requisition, error) {
 	requisitionRequest := CreateRequisitionRequest{
 		Redirect:         c.NordigenRedirectUrl,
 		InstitutionId:    institutionId,

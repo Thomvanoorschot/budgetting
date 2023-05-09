@@ -6,7 +6,10 @@ import (
 	"time"
 )
 
-func (s *Service) CreateRequisition(profileId uuid.UUID, req *handler.CreateRequisitionRequest) (*handler.CreateRequisitionResponse, error) {
+func (s *Service) CreateRequisition(
+	profileId uuid.UUID,
+	req *handler.CreateRequisitionRequest,
+) (*handler.CreateRequisitionResponse, error) {
 	var agreementId uuid.UUID
 	if req.MaxHistoryDays != 90 {
 		ai, err := s.NordigenClient.CreateEndUserAgreement(req.InstitutionId,

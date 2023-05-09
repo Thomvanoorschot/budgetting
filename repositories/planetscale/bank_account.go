@@ -59,7 +59,15 @@ func (r *Repository) GetBankAccountIds(profileId uuid.UUID) ([]uuid.UUID, error)
 func (r *Repository) CreateBankAccount(b *banking.BankAccount) error {
 	query := `INSERT INTO bankAccount (id, profileId, requisitionId, balance, iban, ownerName) VALUES (?, ?, ?, ?, ?, ?)`
 	floatBalance, _ := b.Balance.Float64()
-	_, err := r.client.Exec(query, b.Id, b.ProfileId, b.RequisitionId, floatBalance, b.Iban, b.OwnerName)
+	_, err := r.client.Exec(
+		query,
+		b.Id,
+		b.ProfileId,
+		b.RequisitionId,
+		floatBalance,
+		b.Iban,
+		b.OwnerName,
+	)
 	if err != nil {
 		return err
 	}

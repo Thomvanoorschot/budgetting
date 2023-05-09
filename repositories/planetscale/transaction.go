@@ -9,15 +9,40 @@ import (
 )
 
 func (r *Repository) FilterTransactions(profileId uuid.UUID) ([]*banking.Transaction, error) {
-	//p := &profile.Profile{}
-	//query := `SELECT * FROM profile WHERE id = ?`
-
-	//err := r.client.QueryRow(query, profileId).Scan(&p.Id, &p.UserId)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//return p, nil
-	return nil, nil
+	var transactions []*banking.Transaction
+	var filter string
+	query := `SELECT * FROM transaction ` + filter
+	res, err := r.client.Query(query, profileId)
+	if err != nil {
+		return nil, err
+	}
+	defer func(res *sql.Rows) {
+		_ = res.Close()
+	}(res)
+	for res.Next() {
+		t := &banking.Transaction{}
+		var floatAmount float64
+		var floatBalanceAfterTransaction float64
+		scanErr := res.Scan(
+			&t.Id,
+			&t.BankAccountId,
+			&t.ExternalId,
+			&t.TransactedAt,
+			&floatAmount,
+			&t.CreditorName,
+			&t.CreditorIban,
+			&t.DebtorName,
+			&t.DebtorIban,
+			&floatBalanceAfterTransaction,
+		)
+		t.Amount.SetFloat64(floatAmount)
+		t.BalanceAfterTransaction.SetFloat64(floatBalanceAfterTransaction)
+		if scanErr != nil {
+			return nil, scanErr
+		}
+		transactions = append(transactions, t)
+	}
+	return transactions, nil
 }
 
 func (r *Repository) CreateTransactions(transactions []*banking.Transaction) error {

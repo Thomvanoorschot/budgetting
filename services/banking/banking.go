@@ -66,7 +66,10 @@ func (s *Service) FilterTransactions(
 	profileId uuid.UUID,
 	params *handler.FilterTransactionsRequest,
 ) (*handler.TransactionsResponse, error) {
-	//s.repo.FilterTransactions()
+	transactions, err := s.repo.FilterTransactions(profileId)
+	if err != nil {
+		return nil, err
+	}
 
 	return nil, nil
 }

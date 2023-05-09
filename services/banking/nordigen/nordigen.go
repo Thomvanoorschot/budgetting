@@ -72,7 +72,11 @@ func (c *Client) getAccessToken() error {
 		SecretKey: c.NordigenSecretKey,
 	})
 
-	resp, err := c.Post(fmt.Sprintf("%s/token/new/", c.NordigenUrl), "application/json", bytes.NewBuffer(req))
+	resp, err := c.Post(
+		fmt.Sprintf("%s/token/new/", c.NordigenUrl),
+		"application/json",
+		bytes.NewBuffer(req),
+	)
 	if err != nil {
 		return err
 	}
@@ -90,9 +94,11 @@ func (c *Client) getAccessToken() error {
 		return err
 	}
 	c.accessToken = tokenResponse.Access
-	c.accessTokenExpiresAt = time.Now().Add(time.Duration(tokenResponse.AccessExpires) * time.Second)
+	c.accessTokenExpiresAt = time.Now().
+		Add(time.Duration(tokenResponse.AccessExpires) * time.Second)
 	c.refreshToken = tokenResponse.Refresh
-	c.refreshTokenExpiresAt = time.Now().Add(time.Duration(tokenResponse.RefreshExpires) * time.Second)
+	c.refreshTokenExpiresAt = time.Now().
+		Add(time.Duration(tokenResponse.RefreshExpires) * time.Second)
 	return nil
 }
 
@@ -101,7 +107,11 @@ func (c *Client) refreshAccessToken() error {
 		Refresh: c.refreshToken,
 	})
 
-	resp, err := c.Post(fmt.Sprintf("%s/token/refresh/", c.NordigenUrl), "application/json", bytes.NewBuffer(req))
+	resp, err := c.Post(
+		fmt.Sprintf("%s/token/refresh/", c.NordigenUrl),
+		"application/json",
+		bytes.NewBuffer(req),
+	)
 	if err != nil {
 		return err
 	}

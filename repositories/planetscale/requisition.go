@@ -29,7 +29,15 @@ func (r *Repository) GetRequisitionIds(profileId uuid.UUID) ([]uuid.UUID, error)
 }
 func (r *Repository) CreateRequisition(b *banking.Requisition) error {
 	query := `INSERT INTO requisition (id, profileId, createdAt, agreementId, institutionId, link) VALUES (?, ?, ?, ?, ?, ?)`
-	_, err := r.client.Exec(query, b.Id, b.ProfileId, b.CreatedAt, b.AgreementId, b.InstitutionId, b.Link)
+	_, err := r.client.Exec(
+		query,
+		b.Id,
+		b.ProfileId,
+		b.CreatedAt,
+		b.AgreementId,
+		b.InstitutionId,
+		b.Link,
+	)
 	if err != nil {
 		return err
 	}

@@ -68,7 +68,11 @@ func (c *Client) getAccessToken() error {
 		GrantType:    "client_credentials",
 	})
 
-	resp, err := c.Post(fmt.Sprintf("%s/oauth/token", c.Auth0IssuerUrl), "application/json", bytes.NewBuffer(req))
+	resp, err := c.Post(
+		fmt.Sprintf("%s/oauth/token", c.Auth0IssuerUrl),
+		"application/json",
+		bytes.NewBuffer(req),
+	)
 	if err != nil {
 		return err
 	}
@@ -91,7 +95,8 @@ func (c *Client) getAccessToken() error {
 }
 
 func (c *Client) validateAccessToken() error {
-	if c.accessToken == "" || c.accessTokenExpiresAt.Add(time.Duration(10)*time.Minute).After(time.Now()) {
+	if c.accessToken == "" ||
+		c.accessTokenExpiresAt.Add(time.Duration(10)*time.Minute).After(time.Now()) {
 		return c.getAccessToken()
 	}
 	return nil

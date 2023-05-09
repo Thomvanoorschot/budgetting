@@ -9,7 +9,10 @@ import (
 	"time"
 )
 
-func (c *Client) CreateEndUserAgreement(institutionId uuid.UUID, maxHistoricalDays int64) (uuid.UUID, error) {
+func (c *Client) CreateEndUserAgreement(
+	institutionId uuid.UUID,
+	maxHistoricalDays int64,
+) (uuid.UUID, error) {
 
 	endUserAgreementReq := &CreateEndUserAgreementRequest{
 		InstitutionId:      institutionId,
